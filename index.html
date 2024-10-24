@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .card-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 400px;
+            height: 250px;
+            position: relative;
+        }
+
+        .card img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-button {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 50px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            font-weight: bold;
+            color: #555;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+        }
+
+        .nav-button.left {
+            left: -60px;
+        }
+
+        .nav-button.right {
+            right: -60px;
+        }
+
+        .random-button {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .random-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="card-container">
+        <div class="nav-button left" onclick="prevCard()">&#10094;</div>
+        <div class="card">
+            <img id="card-image" src="https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/1.png" alt="Card Image">
+        </div>
+        <div class="nav-button right" onclick="nextCard()">&#10095;</div>
+        <button class="random-button" onclick="randomCard()">Random Card</button>
+    </div>
+
+    <script>
+        const cards = [
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/1.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/2.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/3.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/4.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/5.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/6.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/7.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/8.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/9.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/10.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/11.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/12.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/13.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/14.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/15.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/16.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/17.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/18.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/19.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/20.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/21.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/22.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/23.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/24.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/25.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/26.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/27.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/28.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/29.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/30.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/31.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/32.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/33.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/34.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/35.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/36.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/37.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/38.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/39.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/40.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/41.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/42.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/43.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/44.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/45.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/46.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/47.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/48.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/49.png",
+            "https://raw.githubusercontent.com/TheFriendshipBlueprint/question-vault/main/50.png"
+        ];
+
+        let currentCardIndex = 0;
+
+        function updateCard() {
+            document.getElementById('card-image').src = cards[currentCardIndex];
+        }
+
+        function nextCard() {
+            currentCardIndex = (currentCardIndex + 1) % cards.length;
+            updateCard();
+        }
+
+        function prevCard() {
+            currentCardIndex = (currentCardIndex - 1 + cards.length) % cards.length;
+            updateCard();
+        }
+
+        function randomCard() {
+            currentCardIndex = Math.floor(Math.random() * cards.length);
+            updateCard();
+        }
+    </script>
+</body>
+</html>
